@@ -20,22 +20,19 @@ class GetProxyIP:
             url = self.base_url + str(pagenum)
             response = requests.get(url,headers=headers,timeout=3)
             html = response.text
-            print(html)
-        #     soup = BeautifulSoup(html,'lxml')
-        #     soup_tr = soup.find_all('tr')
-        #     for item in soup_tr:
-        #         try:
-        #             soup_td = item.find_all('td')
-        #             # print(soup_td[2].text)
-        #             res_pool.append(soup_td[5].text.lower() + '://' + soup_td[1].text + ':' + soup_td[2].text)
-        #             # q = res_pool.append(soup_td[1].text.lower() + '://' + soup_td[2])
-        #             # print(q)
-        #         except IndexError:
-        #             pass
-        # return res_pool
-        # print(res_pool)
-            # print(soup_tr)
             # print(html)
+            soup = BeautifulSoup(html,'lxml')
+            soup_tr = soup.find_all('tr')
+            for item in soup_tr:
+                try:
+                    soup_td = item.find_all('td')
+                    # print(soup_td[2].text)
+                    res_pool.append(soup_td[5].text.lower() + '://' + soup_td[1].text + ':' + soup_td[2].text)
+                    # q = res_pool.append(soup_td[1].text.lower() + '://' + soup_td[2])
+                    # print(q)
+                except IndexError:
+                    pass
+        return res_pool
             # selectot = etree.HTML(html)
             # ipaddr = selectot.xpath('//*[@id="ip_list"]/tbody/tr/td[2]/text()')
     def right_proxies(self,res_pool):
@@ -53,14 +50,13 @@ class GetProxyIP:
                     print('Add: %s'% proxies)
             except Exception as e:
                 continue
-        # print(res_pool)
+        print(res_pool)
         return res_pool
 
 if __name__ == '__main__':
     Proxy = GetProxyIP(10)
     res_pool = Proxy.get_ip()
-    # proxy_ip = Proxy.right_proxies(res_pool)
-    # print(proxy_ip)
+    proxy_ip = Proxy.right_proxies(res_pool)
     time.sleep(0.5)
 
 
